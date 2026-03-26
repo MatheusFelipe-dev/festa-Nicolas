@@ -16,38 +16,13 @@
     background-position: 0 0, 20px 20px;
     background-size: 40px 40px;
     font-family: 'Press Start 2P', cursive;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    /* Removemos o flexbox daqui para evitar que ele corte o topo/fundo da tela */
     min-height: 100vh;
-    overflow: hidden;
+    overflow-x: hidden; /* Esconde a barra horizontal das partículas */
+    overflow-y: auto;   /* LIBERA A ROLAGEM VERTICAL NO CELULAR! */
     color: #fff;
     text-shadow: 2px 2px 0 #000;
   }
-
-  /* 1. Criar uma margem de segurança geral na página */
-.page-container {
-  padding: 16px; /* Adiciona espaço nas laterais */
-  padding-bottom: 24px; /* Adiciona um espaço de segurança no final da tela */
-}
-
-/* 2. Compactar o grupo de botões */
-.btn-group {
-  gap: 12px; /* Reduz o espaço entre os botões */
-}
-
-/* 3. Ajustar o botão vermelho (localização) */
-.btn-red {
-  height: auto; /* Permite que a altura se adapte ao conteúdo interno */
-  padding: 12px 20px; /* Reduz o preenchimento vertical para torná-lo mais compacto */
-}
-
-/* 4. Garantir que o texto apareça abaixo da bússola */
-.btn-red-text {
-  display: block; /* Força o texto a quebrar para uma nova linha */
-  margin-top: 8px; /* Adiciona um pequeno espaço entre a bússola e o texto */
-}
-
   /* --- TELA INICIAL (Logo e Creeper centralizados) --- */
   #initial-screen {
     display: flex;
@@ -120,6 +95,9 @@
     display: none; 
     flex-direction: column;
     align-items: center;
+    justify-content: center; /* Centraliza verticalmente se a tela for muito grande */
+    min-height: 100vh; /* Garante que preencha pelo menos a tela inteira */
+    padding: 30px 0; /* Adiciona um "respiro" em cima e embaixo para o conteúdo não colar nas bordas */
     opacity: 0;
     transform: scale(0.1); 
     transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
