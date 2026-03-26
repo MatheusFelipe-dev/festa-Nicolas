@@ -12,7 +12,6 @@
     margin: 0;
     padding: 0;
     background-color: #3b3b3b; 
-    /* Textura de fundo estilo pedra */
     background-image: repeating-linear-gradient(45deg, #2b2b2b 25%, transparent 25%, transparent 75%, #2b2b2b 75%, #2b2b2b), repeating-linear-gradient(45deg, #2b2b2b 25%, #3b3b3b 25%, #3b3b3b 75%, #2b2b2b 75%, #2b2b2b);
     background-position: 0 0, 20px 20px;
     background-size: 40px 40px;
@@ -26,25 +25,25 @@
     text-shadow: 2px 2px 0 #000;
   }
 
- /* --- TELA INICIAL --- CORRIGIDA */
+  /* --- TELA INICIAL (Logo e Creeper centralizados) --- */
   #initial-screen {
     display: flex;
-    flex-direction: column; /* Items stack vertically: Logo, then Creeper button (Empilha verticalmente) */
-    align-items: center; /* Centers items horizontally (Centraliza horizontalmente) */
-    justify-content: center; /* Centers items vertically on the *whole screen* (Centraliza verticalmente na TELA TODA) */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     transition: opacity 0.5s ease-out;
-    width: 100%; /* Spans full width (Preenche a largura toda) */
-    height: 100vh; /* Critical: Spans full viewport height to center items vertically (PREENCHE A ALTURA TODA DA TELA - ESTA É A REGRA DE OURO!) */
+    width: 100%;
+    height: 100vh; /* Preenche a altura total para centralizar */
     z-index: 10;
     position: relative;
   }
 
   .minecraft-logo {
-    width: 80%; /* Fica responsivo no celular */
-    max-width: 400px; /* Trava o tamanho máximo na tela do PC */
-    height: auto; /* Mantém a proporção */
-    margin-bottom: 50px; /* Small margin to space from Creeper, but flex centers them (Pequena margem, mas o flex cuida da centralização geral) */
+    width: 80%;
+    max-width: 400px;
+    height: auto;
+    margin-bottom: 50px;
     object-fit: contain;
   }
 
@@ -52,7 +51,7 @@
     cursor: pointer;
     perspective: 1000px;
     animation: creeperWobble 4s ease-in-out infinite;
-    display: flex; /* Make the button itself a flex container for face and text (O botão também é um flexbox) */
+    display: flex;
     flex-direction: column;
     align-items: center;
   }
@@ -63,19 +62,9 @@
     max-width: 100%;
     object-fit: contain;
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    margin-bottom: 15px; /* Space between face and text (Espaço entre o rosto e o texto) */
+    margin-bottom: 15px;
   }
 
-  /* Nova classe para o texto, assim podemos controlar o layout separadamente */
-  .creeper-text {
-    font-family: 'Press Start 2P', cursive;
-    color: #fff;
-    text-shadow: 2px 2px 0 #000;
-    font-size: 14px;
-    margin: 0;
-    line-height: 1.5; /* Boa altura de linha para leitura */
-  }
-  /* Animação suave de balanço do Creeper */
   @keyframes creeperWobble {
     0% { transform: rotate(0deg) scale(1); }
     25% { transform: rotate(2deg) scale(1.02); }
@@ -84,7 +73,6 @@
     100% { transform: rotate(0deg) scale(1); }
   }
 
-  /* Efeito de inflar antes da explosão */
   .inflate {
     animation: creeperInflate 1.5s ease-out forwards;
   }
@@ -95,12 +83,18 @@
     40% { transform: scale(1.2); filter: brightness(120%); }
     60% { transform: scale(1.4); filter: brightness(150%); }
     80% { transform: scale(1.7); filter: brightness(200%); }
-    100% { transform: scale(2.0); filter: brightness(300%) opacity(0); }
+    100% { transform: scale(2.0); filter: brightness(300%); opacity: 0; }
   }
 
-  /* --- TELA DO CONVITE --- */
+  .creeper-text {
+    font-size: 14px;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  /* --- TELA DO CONVITE (Aparece após a explosão) --- */
   #invite-container {
-    display: none; /* Escondido no início */
+    display: none; 
     flex-direction: column;
     align-items: center;
     opacity: 0;
@@ -136,7 +130,94 @@
     box-shadow: 0 0 40px rgba(50, 205, 50, 0.6); 
   }
 
-  /* --- EFEITO DE EXPLOSÃO E PARTÍCULAS --- */
+  /* --- GRUPO DE BOTÕES (Central e Lado a Lado) --- */
+  .button-group {
+    display: flex;
+    flex-direction: row; /* Lado a lado no computador */
+    justify-content: center;
+    align-items: stretch; /* Mesma altura para os botões */
+    gap: 20px; /* Espaço entre os botões */
+    width: 90%;
+    max-width: 800px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+
+  /* Estilo base para os botões do Minecraft */
+  .mc-button {
+    flex: 1; /* Divide o espaço igualmente */
+    color: white;
+    border: 4px solid #2E7D32;
+    padding: 15px 20px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 11px; /* Tamanho ligeiramente menor para caber melhor */
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    line-height: 1.8;
+    box-shadow: inset -4px -4px 0px rgba(0,0,0,0.2), 4px 4px 0px rgba(0,0,0,0.5);
+    transition: all 0.1s;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Centraliza conteúdo internaamente */
+  }
+
+  .mc-button:hover {
+    transform: translateY(4px);
+    box-shadow: inset -2px -2px 0px rgba(0,0,0,0.2), 0px 0px 0px rgba(0,0,0,0.5);
+  }
+
+  /* Botão 1: WhatsApp (Verde) */
+  .rsvp-button {
+    background-color: #4CAF50;
+    border-color: #2E7D32;
+  }
+  .rsvp-button:hover {
+    background-color: #45a049;
+  }
+
+  /* Botão 2: Localização (Vermelho Bússola) */
+  .location-button {
+    background-color: #B22222; /* Vermelho Redstone/TNT */
+    border-color: #550000;
+  }
+  .location-button:hover {
+    background-color: #a01f1f;
+  }
+
+  /* Conteúdo do botão de localização */
+  .compass-gif {
+    width: 50px; /* Tamanho controlado do GIF */
+    height: 50px;
+    margin-bottom: 10px;
+    object-fit: contain;
+  }
+
+  .location-text {
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  /* --- AJUSTE PARA DISPOSITIVOS MÓVEIS (Empilhar botões) --- */
+  @media (max-width: 600px) {
+    .button-group {
+      flex-direction: column; /* Empilha verticalmente no celular */
+      width: 80%;
+      max-width: 300px;
+    }
+    .mc-button {
+      font-size: 10px; /* Fonte ainda menor no celular */
+      padding: 10px 15px;
+    }
+    .compass-gif {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  /* --- EFEITO DE EXPLOSÃO --- */
   .explosion-container {
     position: fixed;
     top: 0;
@@ -167,19 +248,17 @@
 
   .particle {
     position: fixed;
-    width: 25px; /* Tamanho de um 'bloco' */
+    width: 25px; 
     height: 25px;
     opacity: 0;
     pointer-events: none;
     box-shadow: 3px 3px 0px rgba(0,0,0,0.5);
     border: 3px solid rgba(0,0,0,0.2);
-    /* Início central */
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
   }
 
-  /* Animação de explosão e desvanecimento das partículas de bloco */
   @keyframes explodeBlockParticle {
     0% {
       opacity: 1;
@@ -191,7 +270,6 @@
     }
   }
 
-  /* Tipos de Blocos de Loot */
   .particle-dirt { background-color: #8B4513; border-color: #3e1f08; }
   .particle-stone { background-color: #808080; border-color: #404040; }
   .particle-tnt { background-color: #B22222; border-color: #550000; box-shadow: 0 0 10px #B22222;}
@@ -199,29 +277,6 @@
   .particle-diamond { background-color: #32CD32; border-color: #006400; box-shadow: 0 0 15px #32CD32;}
   .particle-xp { background-color: #00FF00; border-radius: 50%; border: 3px solid #008000; box-shadow: 0 0 15px #00FF00;}
 
-  /* --- BOTÃO WHATSAPP --- */
-  .mc-button {
-    margin-top: 40px;
-    background-color: #4CAF50;
-    color: white;
-    border: 4px solid #2E7D32;
-    padding: 15px 20px;
-    font-family: 'Press Start 2P', cursive;
-    font-size: 12px;
-    cursor: pointer;
-    text-decoration: none;
-    text-align: center;
-    line-height: 1.8;
-    box-shadow: inset -4px -4px 0px rgba(0,0,0,0.2), 4px 4px 0px rgba(0,0,0,0.5);
-    transition: all 0.1s;
-    z-index: 10;
-  }
-
-  .mc-button:hover {
-    background-color: #45a049;
-    transform: translateY(4px);
-    box-shadow: inset -2px -2px 0px rgba(0,0,0,0.2), 0px 0px 0px rgba(0,0,0,0.5);
-  }
 </style>
 </head>
 <body>
@@ -233,7 +288,7 @@
   <div class="screen-flash" id="flash"></div>
   <div class="explosion-container" id="explosion"></div>
 
-      <div id="initial-screen">
+  <div id="initial-screen">
     <img src="minecraft-logo.svg" alt="Minecraft Logo" class="minecraft-logo">
     
     <div id="creeper-container" onclick="creeperSurprise(this)">
@@ -247,92 +302,84 @@
       <img src="convite.jpeg" alt="Convite de Aniversário" class="invite-image">
     </div>
     
-    <a href="https://wa.me/55SEUNUMERO?text=Olá!%20Confirmo%20minha%20presença%20no%20aniversário%20do%20Nicolas%20Gael!" class="mc-button" target="_blank">
-      CONFIRME SUA PRESENÇA<br>NO NOSSO SERVIDOR
-    </a>
+    <div class="button-group">
+      <a href="https://wa.link/dyjbtu" class="mc-button rsvp-button" target="_blank">
+        CONFIRME SUA PRESENÇA<br>NO NOSSO SERVIDOR
+      </a>
+
+      <a href="https://www.google.com/maps?q=-15.7212088,-48.1291647&z=17&hl=pt-BR" class="mc-button location-button" target="_blank">
+        <img src="bussula.gif" alt="Bússola de Spawn" class="compass-gif">
+        <div class="location-text">localização de Spawn<br>(casa da Vovó Conceicão)</div>
+      </a>
+    </div>
   </div>
 
   <script>
-    // Função para gerar as partículas de blocos de loot
     function generateBlockParticles() {
       const blockTypes = ['dirt', 'stone', 'tnt', 'redstone', 'diamond', 'xp'];
-      const numParticles = 40; // Uma verdadeira explosão de loot!
+      const numParticles = 40; 
 
       for (let i = 0; i < numParticles; i++) {
         const particle = document.createElement('div');
         const type = blockTypes[Math.floor(Math.random() * blockTypes.length)];
         particle.classList.add('particle', 'particle-' + type);
 
-        // Define propriedades CSS customizadas para variação de direção e rotação
-        const x = (Math.random() - 0.5) * 800; // Dispersão horizontal mais ampla
-        const y = (Math.random() - 1) * 800;   // Dispersão vertical (sobe mais e cai)
-        const scale = 0.5 + Math.random() * 1.5; // Tamanho de bloco variado
-        const rotate = (Math.random() - 0.5) * 1440; // Rotação louca
+        const x = (Math.random() - 0.5) * 800; 
+        const y = (Math.random() - 1) * 800;   
+        const scale = 0.5 + Math.random() * 1.5; 
+        const rotate = (Math.random() - 0.5) * 1440; 
 
         particle.style.setProperty('--x', `${x}px`);
         particle.style.setProperty('--y', `${y}px`);
         particle.style.setProperty('--scale', `${scale}`);
         particle.style.setProperty('--rotate', `${rotate}deg`);
 
-        // Aplica a animação de explosão
         particle.style.animation = 'explodeBlockParticle 1s ease-out forwards';
 
         document.getElementById('explosion').appendChild(particle);
 
-        // Remove a partícula após a animação
         setTimeout(() => {
           particle.remove();
         }, 1000);
       }
     }
 
-    // Função que gera o flash da tela
     function triggerFlash() {
       const flash = document.getElementById('flash');
       flash.style.animation = 'flashAnimation 0.3s ease-out';
-      
-      // Reseta a animação para poder tocar novamente
       setTimeout(() => {
         flash.style.animation = 'none';
       }, 300);
     }
 
-    // Função principal de surpresa do Creeper
-    // Função principal de surpresa do Creeper
     function creeperSurprise(creeperElement) {
-      // Impede que o botão seja clicado várias vezes seguidas
       creeperElement.style.pointerEvents = 'none';
 
-      // 1. Toca o som de siss e o Creeper começa a inflar
       const audioHiss = document.getElementById('audio-creeper-hiss');
       if (audioHiss) audioHiss.play().catch(e => console.log('Áudio de siss não carregou:', e));
 
-      // CORREÇÃO: Forçamos a nova animação diretamente no elemento
+      // Inicia animação de inflar
       creeperElement.style.animation = 'creeperInflate 1.5s ease-out forwards';
 
-      // Pequeno delay para o "siss" e o "inflar" criar expectativa (1.5s no CSS)
       setTimeout(() => {
-        // 2. A explosão acontece!
-        // Toca o som de explosão de TNT
         const audioExplode = document.getElementById('audio-tnt-explode');
         if (audioExplode) audioExplode.play().catch(e => console.log('Áudio de explosão não carregou:', e));
 
-        // Aciona o flash e gera a explosão de loot de blocos
         triggerFlash();
         generateBlockParticles();
 
-        // Esconde a tela inicial (logotipo e Creeper)
+        // Esconde a tela inicial
         document.getElementById('initial-screen').style.display = 'none';
 
-        // 3. Toca o som de loot e revela o convite
         setTimeout(() => {
           const audioLoot = document.getElementById('audio-loot-spawn');
           if (audioLoot) audioLoot.play().catch(e => console.log('Áudio de loot não carregou:', e));
 
+          // Revela o convite com os novos botões
           const invite = document.getElementById('invite-container');
           invite.classList.add('show');
-        }, 200); // Revela quase imediatamente após o flash
-      }, 1500); // 1500ms é o tempo exato da animação de inflar
+        }, 200); 
+      }, 1500); 
     }
   </script>
 
