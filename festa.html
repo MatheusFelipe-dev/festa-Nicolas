@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Convite Nível 6 - Nicolas Gael - SURPRESA BLOCKBUSTER!</title>
+<style>
+  /* Importando a fonte estilo Minecraft */
+  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #3b3b3b; 
+    /* Textura de fundo estilo pedra */
+    background-image: repeating-linear-gradient(45deg, #2b2b2b 25%, transparent 25%, transparent 75%, #2b2b2b 75%, #2b2b2b), repeating-linear-gradient(45deg, #2b2b2b 25%, #3b3b3b 25%, #3b3b3b 75%, #2b2b2b 75%, #2b2b2b);
+    background-position: 0 0, 20px 20px;
+    background-size: 40px 40px;
+    font-family: 'Press Start 2P', cursive;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+    color: #fff;
+    text-shadow: 2px 2px 0 #000;
+  }
+
+ /* --- TELA INICIAL --- CORRIGIDA */
+  #initial-screen {
+    display: flex;
+    flex-direction: column; /* Items stack vertically: Logo, then Creeper button (Empilha verticalmente) */
+    align-items: center; /* Centers items horizontally (Centraliza horizontalmente) */
+    justify-content: center; /* Centers items vertically on the *whole screen* (Centraliza verticalmente na TELA TODA) */
+    text-align: center;
+    transition: opacity 0.5s ease-out;
+    width: 100%; /* Spans full width (Preenche a largura toda) */
+    height: 100vh; /* Critical: Spans full viewport height to center items vertically (PREENCHE A ALTURA TODA DA TELA - ESTA É A REGRA DE OURO!) */
+    z-index: 10;
+    position: relative;
+  }
+
+  .minecraft-logo {
+    width: 80%; /* Fica responsivo no celular */
+    max-width: 400px; /* Trava o tamanho máximo na tela do PC */
+    height: auto; /* Mantém a proporção */
+    margin-bottom: 50px; /* Small margin to space from Creeper, but flex centers them (Pequena margem, mas o flex cuida da centralização geral) */
+    object-fit: contain;
+  }
+
+  #creeper-container {
+    cursor: pointer;
+    perspective: 1000px;
+    animation: creeperWobble 4s ease-in-out infinite;
+    display: flex; /* Make the button itself a flex container for face and text (O botão também é um flexbox) */
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .creeper-svg {
+    width: 150px;
+    height: 150px;
+    max-width: 100%;
+    object-fit: contain;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    margin-bottom: 15px; /* Space between face and text (Espaço entre o rosto e o texto) */
+  }
+
+  /* Nova classe para o texto, assim podemos controlar o layout separadamente */
+  .creeper-text {
+    font-family: 'Press Start 2P', cursive;
+    color: #fff;
+    text-shadow: 2px 2px 0 #000;
+    font-size: 14px;
+    margin: 0;
+    line-height: 1.5; /* Boa altura de linha para leitura */
+  }
+  /* Animação suave de balanço do Creeper */
+  @keyframes creeperWobble {
+    0% { transform: rotate(0deg) scale(1); }
+    25% { transform: rotate(2deg) scale(1.02); }
+    50% { transform: rotate(-2deg) scale(0.98); }
+    75% { transform: rotate(1deg) scale(1.01); }
+    100% { transform: rotate(0deg) scale(1); }
+  }
+
+  /* Efeito de inflar antes da explosão */
+  .inflate {
+    animation: creeperInflate 1.5s ease-out forwards;
+  }
+
+  @keyframes creeperInflate {
+    0% { transform: scale(1); filter: brightness(100%); }
+    20% { transform: scale(1.1); filter: brightness(110%); }
+    40% { transform: scale(1.2); filter: brightness(120%); }
+    60% { transform: scale(1.4); filter: brightness(150%); }
+    80% { transform: scale(1.7); filter: brightness(200%); }
+    100% { transform: scale(2.0); filter: brightness(300%) opacity(0); }
+  }
+
+  /* --- TELA DO CONVITE --- */
+  #invite-container {
+    display: none; /* Escondido no início */
+    flex-direction: column;
+    align-items: center;
+    opacity: 0;
+    transform: scale(0.1); 
+    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+    width: 100%;
+  }
+
+  #invite-container.show {
+    display: flex;
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .floating {
+    animation: float 4s ease-in-out infinite;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  @keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+    100% { transform: translateY(0px); }
+  }
+
+  .invite-image {
+    max-width: 90%;
+    max-height: 70vh;
+    border: 6px solid #555;
+    border-radius: 4px;
+    box-shadow: 0 0 40px rgba(50, 205, 50, 0.6); 
+  }
+
+  /* --- EFEITO DE EXPLOSÃO E PARTÍCULAS --- */
+  .explosion-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 99;
+  }
+
+  .screen-flash {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  @keyframes flashAnimation {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+  .particle {
+    position: fixed;
+    width: 25px; /* Tamanho de um 'bloco' */
+    height: 25px;
+    opacity: 0;
+    pointer-events: none;
+    box-shadow: 3px 3px 0px rgba(0,0,0,0.5);
+    border: 3px solid rgba(0,0,0,0.2);
+    /* Início central */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  /* Animação de explosão e desvanecimento das partículas de bloco */
+  @keyframes explodeBlockParticle {
+    0% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1) rotate(0deg);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(var(--scale)) rotate(var(--rotate));
+    }
+  }
+
+  /* Tipos de Blocos de Loot */
+  .particle-dirt { background-color: #8B4513; border-color: #3e1f08; }
+  .particle-stone { background-color: #808080; border-color: #404040; }
+  .particle-tnt { background-color: #B22222; border-color: #550000; box-shadow: 0 0 10px #B22222;}
+  .particle-redstone { background-color: #FF0000; border-color: #800000; box-shadow: 0 0 8px #FF0000;}
+  .particle-diamond { background-color: #32CD32; border-color: #006400; box-shadow: 0 0 15px #32CD32;}
+  .particle-xp { background-color: #00FF00; border-radius: 50%; border: 3px solid #008000; box-shadow: 0 0 15px #00FF00;}
+
+  /* --- BOTÃO WHATSAPP --- */
+  .mc-button {
+    margin-top: 40px;
+    background-color: #4CAF50;
+    color: white;
+    border: 4px solid #2E7D32;
+    padding: 15px 20px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 12px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    line-height: 1.8;
+    box-shadow: inset -4px -4px 0px rgba(0,0,0,0.2), 4px 4px 0px rgba(0,0,0,0.5);
+    transition: all 0.1s;
+    z-index: 10;
+  }
+
+  .mc-button:hover {
+    background-color: #45a049;
+    transform: translateY(4px);
+    box-shadow: inset -2px -2px 0px rgba(0,0,0,0.2), 0px 0px 0px rgba(0,0,0,0.5);
+  }
+</style>
+</head>
+<body>
+
+  <audio id="audio-creeper-hiss" src="creeper_hiss.mp3"></audio>
+  <audio id="audio-tnt-explode" src="tnt_explode.mp3"></audio>
+  <audio id="audio-loot-spawn" src="levelup_experience.mp3"></audio>
+
+  <div class="screen-flash" id="flash"></div>
+  <div class="explosion-container" id="explosion"></div>
+
+      <div id="initial-screen">
+    <img src="minecraft-logo.svg" alt="Minecraft Logo" class="minecraft-logo">
+    
+    <div id="creeper-container" onclick="creeperSurprise(this)">
+      <img src="creeper.svg" alt="Creeper Face" class="creeper-svg">
+      <p class="creeper-text">TOQUE NO CREEPER<br>PARA ENTRAR NO SERVIDOR</p>
+    </div>
+  </div>
+
+  <div id="invite-container">
+    <div class="floating">
+      <img src="convite.jpeg" alt="Convite de Aniversário" class="invite-image">
+    </div>
+    
+    <a href="https://wa.me/55SEUNUMERO?text=Olá!%20Confirmo%20minha%20presença%20no%20aniversário%20do%20Nicolas%20Gael!" class="mc-button" target="_blank">
+      CONFIRME SUA PRESENÇA<br>NO NOSSO SERVIDOR
+    </a>
+  </div>
+
+  <script>
+    // Função para gerar as partículas de blocos de loot
+    function generateBlockParticles() {
+      const blockTypes = ['dirt', 'stone', 'tnt', 'redstone', 'diamond', 'xp'];
+      const numParticles = 40; // Uma verdadeira explosão de loot!
+
+      for (let i = 0; i < numParticles; i++) {
+        const particle = document.createElement('div');
+        const type = blockTypes[Math.floor(Math.random() * blockTypes.length)];
+        particle.classList.add('particle', 'particle-' + type);
+
+        // Define propriedades CSS customizadas para variação de direção e rotação
+        const x = (Math.random() - 0.5) * 800; // Dispersão horizontal mais ampla
+        const y = (Math.random() - 1) * 800;   // Dispersão vertical (sobe mais e cai)
+        const scale = 0.5 + Math.random() * 1.5; // Tamanho de bloco variado
+        const rotate = (Math.random() - 0.5) * 1440; // Rotação louca
+
+        particle.style.setProperty('--x', `${x}px`);
+        particle.style.setProperty('--y', `${y}px`);
+        particle.style.setProperty('--scale', `${scale}`);
+        particle.style.setProperty('--rotate', `${rotate}deg`);
+
+        // Aplica a animação de explosão
+        particle.style.animation = 'explodeBlockParticle 1s ease-out forwards';
+
+        document.getElementById('explosion').appendChild(particle);
+
+        // Remove a partícula após a animação
+        setTimeout(() => {
+          particle.remove();
+        }, 1000);
+      }
+    }
+
+    // Função que gera o flash da tela
+    function triggerFlash() {
+      const flash = document.getElementById('flash');
+      flash.style.animation = 'flashAnimation 0.3s ease-out';
+      
+      // Reseta a animação para poder tocar novamente
+      setTimeout(() => {
+        flash.style.animation = 'none';
+      }, 300);
+    }
+
+    // Função principal de surpresa do Creeper
+    // Função principal de surpresa do Creeper
+    function creeperSurprise(creeperElement) {
+      // Impede que o botão seja clicado várias vezes seguidas
+      creeperElement.style.pointerEvents = 'none';
+
+      // 1. Toca o som de siss e o Creeper começa a inflar
+      const audioHiss = document.getElementById('audio-creeper-hiss');
+      if (audioHiss) audioHiss.play().catch(e => console.log('Áudio de siss não carregou:', e));
+
+      // CORREÇÃO: Forçamos a nova animação diretamente no elemento
+      creeperElement.style.animation = 'creeperInflate 1.5s ease-out forwards';
+
+      // Pequeno delay para o "siss" e o "inflar" criar expectativa (1.5s no CSS)
+      setTimeout(() => {
+        // 2. A explosão acontece!
+        // Toca o som de explosão de TNT
+        const audioExplode = document.getElementById('audio-tnt-explode');
+        if (audioExplode) audioExplode.play().catch(e => console.log('Áudio de explosão não carregou:', e));
+
+        // Aciona o flash e gera a explosão de loot de blocos
+        triggerFlash();
+        generateBlockParticles();
+
+        // Esconde a tela inicial (logotipo e Creeper)
+        document.getElementById('initial-screen').style.display = 'none';
+
+        // 3. Toca o som de loot e revela o convite
+        setTimeout(() => {
+          const audioLoot = document.getElementById('audio-loot-spawn');
+          if (audioLoot) audioLoot.play().catch(e => console.log('Áudio de loot não carregou:', e));
+
+          const invite = document.getElementById('invite-container');
+          invite.classList.add('show');
+        }, 200); // Revela quase imediatamente após o flash
+      }, 1500); // 1500ms é o tempo exato da animação de inflar
+    }
+  </script>
+
+</body>
+</html>
