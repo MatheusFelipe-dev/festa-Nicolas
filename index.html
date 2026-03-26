@@ -25,6 +25,29 @@
     text-shadow: 2px 2px 0 #000;
   }
 
+  /* 1. Criar uma margem de segurança geral na página */
+.page-container {
+  padding: 16px; /* Adiciona espaço nas laterais */
+  padding-bottom: 24px; /* Adiciona um espaço de segurança no final da tela */
+}
+
+/* 2. Compactar o grupo de botões */
+.btn-group {
+  gap: 12px; /* Reduz o espaço entre os botões */
+}
+
+/* 3. Ajustar o botão vermelho (localização) */
+.btn-red {
+  height: auto; /* Permite que a altura se adapte ao conteúdo interno */
+  padding: 12px 20px; /* Reduz o preenchimento vertical para torná-lo mais compacto */
+}
+
+/* 4. Garantir que o texto apareça abaixo da bússola */
+.btn-red-text {
+  display: block; /* Força o texto a quebrar para uma nova linha */
+  margin-top: 8px; /* Adiciona um pequeno espaço entre a bússola e o texto */
+}
+
   /* --- TELA INICIAL (Logo e Creeper centralizados) --- */
   #initial-screen {
     display: flex;
